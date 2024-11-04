@@ -14,10 +14,11 @@ message VideoRequest {
 }
 
 message VideoResponse {
-  string stage_id = 1;
-  string zone_id = 2;
-  string region_id = 3;
-  string region_name = 4;
-  double timestamp = 5;
-  string output = 6;
+  double timestamp = 1;
+  repeated RegionResponse regions = 2;
+}
+
+message RegionResponse {
+  string name = 4;
+  string output = 5;
 }

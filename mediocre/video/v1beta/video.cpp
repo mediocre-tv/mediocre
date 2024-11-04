@@ -70,6 +70,9 @@ namespace mediocre::video::v1beta {
 
             const auto timestamp = cap.get(cv::CAP_PROP_POS_MSEC) / 1000;
 
+            VideoResponse videoResponse;
+            videoResponse.set_timestamp(timestamp);
+
             for (const auto &zone: configuration.zones()) {
                 if (std::find(zone_ids.begin(), zone_ids.end(), zone.id()) == zone_ids.end()) {
                     continue;
@@ -90,17 +93,15 @@ namespace mediocre::video::v1beta {
 
                     auto result = TransformServiceImpl::transform(frame, regionTransforms);
 
-                    VideoResponse response;
-                    response.set_stage_id(stage.id());
-                    response.set_zone_id(zone.id());
-                    response.set_region_id(region.id());
-                    response.set_region_name(region.name());
-                    response.set_timestamp(timestamp);
-                    response.set_output(result);
+                    RegionResponse regionResponse;
+                    regionResponse.set_name(region.name());
+                    regionResponse.set_output(result);
 
-                    onResponse(response);
+                    videoResponse.add_regions()->CopyFrom(regionResponse);
                 }
             }
+
+            onResponse(videoResponse);
 
             double next_frame = (timestamp + 1) * fps;
             cap.set(cv::CAP_PROP_POS_FRAMES, next_frame);
