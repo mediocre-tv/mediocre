@@ -22,7 +22,7 @@ namespace mediocre::video::v1beta {
         static void processVideo(
                 const mediocre::configuration::v1beta::GameConfiguration &configuration,
                 const mediocre::configuration::v1beta::UserConfiguration &preferences,
-                const std::string &source,
+                const VideoSource &source,
                 const std::function<void(VideoResponse)> &onResponse);
         static int sendNotification(const std::string &title, const std::string &body, const std::string &url);
     };

@@ -12,6 +12,7 @@
 #include <mediocre/video/v1beta/video.hpp>
 #include <opencv2/core/mat.hpp>
 #include <opencv2/opencv.hpp>
+#include <sys/wait.h>
 
 namespace mediocre::video::v1beta {
 
@@ -47,9 +48,15 @@ namespace mediocre::video::v1beta {
         return transform;
     }
 
-    void VideoServiceImpl::processVideo(const mediocre::configuration::v1beta::GameConfiguration &configuration, const mediocre::configuration::v1beta::UserConfiguration &preferences, const std::string &source, const std::function<void(VideoResponse)> &onResponse) {
+    void VideoServiceImpl::processVideo(const mediocre::configuration::v1beta::GameConfiguration &configuration, const mediocre::configuration::v1beta::UserConfiguration &preferences, const VideoSource &source, const std::function<void(VideoResponse)> &onResponse) {
 
-        cv::VideoCapture cap(source);
+        cv::VideoCapture cap;
+        if (source.has_file()) {
+            cap.open(source.file());
+        } else {
+            cap.open(source.camera());
+        }
+
         if (!cap.isOpened()) {
             throw std::runtime_error("Error opening video stream or file");
         }
@@ -125,10 +132,10 @@ namespace mediocre::video::v1beta {
 
                 std::ostringstream messageStream;
                 messageStream
-                        << "\\\`" << clock << "\\\`"
-                        << " \\\`Blue " << blue_score
+                        << "`" << clock << "`"
+                        << " `Blue " << blue_score
                         << "-"
-                        << orange_score << " Orange\\\`";
+                        << orange_score << " Orange`";
                 std::string message = messageStream.str();
 
                 std::cout << message << std::endl;

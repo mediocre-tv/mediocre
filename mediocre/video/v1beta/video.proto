@@ -12,7 +12,14 @@ service VideoService {
 message VideoRequest {
   configuration.v1beta.GameConfiguration configuration = 1;
   configuration.v1beta.UserConfiguration user = 2;
-  string source = 3;
+  VideoSource source = 3;
+}
+
+message VideoSource {
+  oneof source {
+    string file = 1;
+    int32 camera = 2;
+  }
 }
 
 message VideoResponse {
