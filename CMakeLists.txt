@@ -49,6 +49,7 @@ add_library(
         mediocre/image/border/v1beta/border.proto
         mediocre/configuration/v1beta/game.proto
         mediocre/configuration/v1beta/test.proto
+        mediocre/configuration/v1beta/user.proto
         mediocre/video/v1beta/video.proto
         grpc/health/v1/health.proto
 )
