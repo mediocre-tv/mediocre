@@ -137,6 +137,13 @@ RUN mkdir -p /local/grpcwebproxy && cd "$_" \
     && cp ./download/dist/grpcwebproxy-v$GRPC_WEB_PROXY_VERSION\-linux-x86_64 ./install/grpcwebproxy
 ENV PATH=$PATH:/local/grpcwebproxy/bin
 
+# install apprise
+ARG APPRISE_VERSION=1.9.0
+RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
+    apt-get update \
+    && apt-get install -y python3-pip
+RUN pip install apprise==$APPRISE_VERSION --break-system-packages
+
 
 FROM develop AS build
 
