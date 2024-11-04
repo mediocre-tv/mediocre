@@ -49,7 +49,7 @@ namespace mediocre::video::v1beta {
 
     void VideoServiceImpl::processVideo(const mediocre::configuration::v1beta::GameConfiguration &configuration, const std::string &source, const std::function<void(VideoResponse)> &onResponse) {
 
-        cv::VideoCapture cap(source, cv::CAP_FFMPEG);
+        cv::VideoCapture cap(source);
         if (!cap.isOpened()) {
             throw std::runtime_error("Error opening video stream or file");
         }
