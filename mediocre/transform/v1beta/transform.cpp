@@ -68,6 +68,17 @@ namespace mediocre::transform::v1beta {
         return Status::OK;
     }
 
+    std::string TransformServiceImpl::transform(const cv::Mat &image, const google::protobuf::RepeatedPtrField<mediocre::transform::v1beta::Transform> &transforms) {
+        IntermediateType intermediate = image.clone();
+        transform(transforms, [](const mediocre::transform::v1beta::Transform &transform, const TransformResponse &response) -> void {}, intermediate);
+
+        if (const auto value = std::get_if<std::string>(&intermediate)) {
+            return *value;
+        } else {
+            return "Result was not a string";
+        }
+    }
+
     void TransformServiceImpl::transform(
             const google::protobuf::RepeatedPtrField<mediocre::transform::v1beta::Transform> &transforms,
             const std::function<void(mediocre::transform::v1beta::Transform, TransformResponse)> &onTransformed,

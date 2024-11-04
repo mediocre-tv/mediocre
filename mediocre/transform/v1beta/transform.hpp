@@ -21,6 +21,9 @@ namespace mediocre::transform::v1beta {
                 ServerContext *context,
                 const TransformBatchRequest *request,
                 ServerWriter<TransformBatchResponse> *writer) override;
+        static std::string transform(
+                const cv::Mat &image,
+                const google::protobuf::RepeatedPtrField<mediocre::transform::v1beta::Transform> &transforms);
 
     private:
         using IntermediateType = std::variant<cv::Mat, std::string>;
