@@ -32,7 +32,7 @@ namespace mediocre::video::v1beta {
             ServerWriter<VideoResponse> *writer) {
 
         try {
-            processVideo(request->configuration(), request->source(), [&writer](const VideoResponse &response) {
+            processVideo(request->configuration(), request->user(), request->source(), [&writer](const VideoResponse &response) {
                 writer->Write(response);
             });
             return Status::OK;
@@ -47,7 +47,7 @@ namespace mediocre::video::v1beta {
         return transform;
     }
 
-    void VideoServiceImpl::processVideo(const mediocre::configuration::v1beta::GameConfiguration &configuration, const std::string &source, const std::function<void(VideoResponse)> &onResponse) {
+    void VideoServiceImpl::processVideo(const mediocre::configuration::v1beta::GameConfiguration &configuration, const mediocre::configuration::v1beta::UserConfiguration &preferences, const std::string &source, const std::function<void(VideoResponse)> &onResponse) {
 
         cv::VideoCapture cap(source);
         if (!cap.isOpened()) {
@@ -61,6 +61,8 @@ namespace mediocre::video::v1beta {
 
         const auto &stage = configuration.stages(0);
         const auto &zone_ids = stage.zone_ids();
+
+        std::map<std::string, std::string> region_values;
 
         cv::Mat frame;
         while (true) {
@@ -101,6 +103,41 @@ namespace mediocre::video::v1beta {
                 }
             }
 
+            for (const auto &region: videoResponse.regions()) {
+                if (region.output() == "Result was not a string" || !(region.name() == "Blue Score" || region.name() == "Orange Score")) {
+                    continue;
+                }
+
+                const auto previous_result = region_values[region.name()];
+                const auto &current_result = region.output();
+
+                region_values[region.name()] = current_result;
+
+                if (region.output() == previous_result || region_values.count("Blue Score") == 0 || region_values.count("Orange Score") == 0) {
+                    continue;
+                }
+
+                std::cout << "Change detected at " << timestamp << " seconds" << std::endl;
+
+                const auto blue_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Blue Score"; })->output();
+                const auto orange_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Orange Score"; })->output();
+                const auto clock = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Clock"; })->output();
+
+                std::ostringstream messageStream;
+                messageStream
+                        << "\\\`" << clock << "\\\`"
+                        << " \\\`Blue " << blue_score
+                        << "-"
+                        << orange_score << " Orange\\\`";
+                std::string message = messageStream.str();
+
+                std::cout << message << std::endl;
+
+                if (!preferences.notification_url().empty()) {
+                    sendNotification("", message, preferences.notification_url());
+                }
+            }
+
             onResponse(videoResponse);
 
             double next_frame = (timestamp + 1) * fps;
@@ -108,6 +145,11 @@ namespace mediocre::video::v1beta {
         }
 
         cap.release();
+    }
+
+    int VideoServiceImpl::sendNotification(const std::string &title, const std::string &body, const std::string &url) {
+        std::string command = "apprise -vv -t \"" + title + "\" -b \"" + body + "\" " + url;
+        return std::system(command.c_str());
     }
 
 }// namespace mediocre::video::v1beta

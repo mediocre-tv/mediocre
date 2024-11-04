@@ -3,6 +3,7 @@ syntax = "proto3";
 package mediocre.video.v1beta;
 
 import "mediocre/configuration/v1beta/game.proto";
+import "mediocre/configuration/v1beta/user.proto";
 
 service VideoService {
   rpc Video(VideoRequest) returns (stream VideoResponse);
@@ -10,7 +11,8 @@ service VideoService {
 
 message VideoRequest {
   configuration.v1beta.GameConfiguration configuration = 1;
-  string source = 2;
+  configuration.v1beta.UserConfiguration user = 2;
+  string source = 3;
 }
 
 message VideoResponse {
