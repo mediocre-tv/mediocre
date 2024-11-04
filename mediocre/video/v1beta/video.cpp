@@ -110,25 +110,15 @@ namespace mediocre::video::v1beta {
                 }
             }
 
-            for (const auto &region: videoResponse.regions()) {
-                if (region.output() == "Result was not a string" || !(region.name() == "Blue Score" || region.name() == "Orange Score")) {
-                    continue;
-                }
+            const auto blue_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Blue Score"; })->output();
+            const auto orange_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Orange Score"; })->output();
+            const auto clock = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Clock"; })->output();
 
-                const auto previous_result = region_values[region.name()];
-                const auto &current_result = region.output();
+            const auto previous_blue_score = region_values["Blue Score"];
+            const auto previous_orange_score = region_values["Orange Score"];
 
-                region_values[region.name()] = current_result;
-
-                if (region.output() == previous_result || region_values.count("Blue Score") == 0 || region_values.count("Orange Score") == 0) {
-                    continue;
-                }
-
+            if ((!blue_score.empty() && blue_score != "Result was not a string") && (!orange_score.empty() && orange_score != "Result was not a string") && (!clock.empty() && clock != "Result was not a string") && (blue_score != previous_blue_score || orange_score != previous_orange_score)) {
                 std::cout << "Change detected at " << timestamp << " seconds" << std::endl;
-
-                const auto blue_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Blue Score"; })->output();
-                const auto orange_score = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Orange Score"; })->output();
-                const auto clock = std::find_if(videoResponse.regions().begin(), videoResponse.regions().end(), [](const RegionResponse &region) { return region.name() == "Clock"; })->output();
 
                 std::ostringstream messageStream;
                 messageStream
@@ -143,6 +133,9 @@ namespace mediocre::video::v1beta {
                 if (!preferences.notification_url().empty()) {
                     sendNotification("", message, preferences.notification_url());
                 }
+
+                region_values["Blue Score"] = blue_score;
+                region_values["Orange Score"] = orange_score;
             }
 
             onResponse(videoResponse);
