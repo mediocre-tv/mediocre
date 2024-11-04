@@ -148,8 +148,57 @@ namespace mediocre::video::v1beta {
     }
 
     int VideoServiceImpl::sendNotification(const std::string &title, const std::string &body, const std::string &url) {
-        std::string command = "apprise -vv -t \"" + title + "\" -b \"" + body + "\" " + url;
-        return std::system(command.c_str());
+        // Construct the command-line arguments as C-style strings
+        std::vector<char *> args;
+
+        // Add the apprise command
+        args.push_back(strdup("apprise"));
+
+        // Add each argument for the command
+        if (!title.empty()) {
+            args.push_back(strdup("-t"));
+            args.push_back(strdup(title.c_str()));
+        }
+
+        if (!body.empty()) {
+            args.push_back(strdup("-b"));
+            args.push_back(strdup(body.c_str()));
+        }
+
+        // Add the Apprise URL
+        args.push_back(strdup(url.c_str()));
+
+        // Mark the end of the arguments with nullptr
+        args.push_back(nullptr);
+
+        // Fork the process
+        pid_t pid = fork();
+
+        if (pid == -1) {
+            // Fork failed
+            perror("fork failed");
+            return errno;
+        } else if (pid == 0) {
+            // In the child process
+            execv("/usr/local/bin/apprise", args.data());// Replace with the path to apprise
+            perror("execv failed");                      // If execv returns, it failed
+            _exit(EXIT_FAILURE);                         // Exit child process if execv fails
+        } else {
+            // In the parent process
+            int status;
+            waitpid(pid, &status, 0);// Wait for the child process to complete
+
+            // Free the allocated memory for arguments
+            for (char *arg: args) {
+                free(arg);
+            }
+
+            if (WIFEXITED(status)) {
+                return WEXITSTATUS(status);// Return the exit code of the child process
+            } else {
+                return -1;// Indicate an error if the child did not terminate normally
+            }
+        }
     }
 
 }// namespace mediocre::video::v1beta
