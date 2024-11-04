@@ -62,6 +62,9 @@ ENV PATH=$PATH:/local/grpc/install/bin
 # install opencv
 # we should be building staticly, but see https://github.com/opencv/opencv/issues/21447#issuecomment-1013088996
 ARG OPENCV_VERSION=4.10.0
+RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
+    apt-get update \
+    && apt-get install -y ffmpeg libavformat-dev libavcodec-dev libswscale-dev
 RUN --mount=type=cache,target=/local/opencv/build \
     cd /local/opencv/build \
     && mkdir ../download && mkdir ../install \
@@ -71,6 +74,7 @@ RUN --mount=type=cache,target=/local/opencv/build \
              -D BUILD_opencv_highgui=OFF \
              -D WITH_PROTOBUF=ON \
              -D BUILD_PROTOBUF=OFF \
+             -D WITH_FFMPEG=ON \
              -D BUILD_TESTS=OFF \
              -D BUILD_PERF_TESTS=OFF \
              -G Ninja \
