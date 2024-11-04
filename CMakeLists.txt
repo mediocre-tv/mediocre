@@ -25,6 +25,7 @@ add_executable(
         mediocre/image/scale/v1beta/scale.cpp
         mediocre/image/border/v1beta/border.cpp
         mediocre/image/ocr/v1beta/mediocre_numeric_display.cpp
+        mediocre/video/v1beta/video.cpp
 )
 
 # include all hpp files
@@ -48,6 +49,7 @@ add_library(
         mediocre/image/border/v1beta/border.proto
         mediocre/configuration/v1beta/game.proto
         mediocre/configuration/v1beta/test.proto
+        mediocre/video/v1beta/video.proto
         grpc/health/v1/health.proto
 )
 

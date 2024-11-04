@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package mediocre.video.v1beta;
+
+import "mediocre/configuration/v1beta/game.proto";
+
+service VideoService {
+  rpc Video(VideoRequest) returns (stream VideoResponse);
+}
+
+message VideoRequest {
+  configuration.v1beta.GameConfiguration configuration = 1;
+  string source = 2;
+}
+
+message VideoResponse {
+  string stage_id = 1;
+  string zone_id = 2;
+  string region_id = 3;
+  string region_name = 4;
+  double timestamp = 5;
+  string output = 6;
+}

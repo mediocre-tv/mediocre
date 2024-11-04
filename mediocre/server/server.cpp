@@ -9,6 +9,7 @@
 #include <mediocre/image/ocr/v1beta/ocr.hpp>
 #include <mediocre/server/server.hpp>
 #include <mediocre/transform/v1beta/transform.hpp>
+#include <mediocre/video/v1beta/video.hpp>
 
 namespace mediocre::server {
 
@@ -56,6 +57,7 @@ namespace mediocre::server {
                 new image::threshold::v1beta::ThresholdServiceImpl(),
                 new image::rotate::v1beta::RotateServiceImpl(),
                 new image::invert::v1beta::InvertServiceImpl(),
+                new video::v1beta::VideoServiceImpl(),
         });
 
         // Register services.
