@@ -130,7 +130,10 @@ jobs:
           export max_retries=20
           export cur_retries=0
           until [[ $(grpc-client-cli health 127.0.0.1:80 | jq -r '.status') == 'SERVING' ]]; do
-            if (( $cur_retries >= $max_retries )); then exit 1; fi
+            if (( $cur_retries >= $max_retries )); then
+              docker logs mediocre
+              exit 1;
+            fi
             echo "Waiting for a healthy container...($cur_retries/$max_retries)"
             sleep 0.05
             export cur_retries=$((cur_retries+1))
