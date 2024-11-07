@@ -168,7 +168,8 @@ FROM ubuntu:$UBUNTU_VERSION AS release
 # opencv also builds these, can we use those instead?
 RUN --mount=type=cache,sharing=locked,target=/var/cache/apt \
     apt-get update \
-    && apt-get install -y libicu-dev libpango1.0-dev libcairo2-dev libtiff-dev libjpeg-dev
+    && apt-get install -y libicu-dev libpango1.0-dev libcairo2-dev libtiff-dev libjpeg-dev \
+                          ffmpeg libavformat-dev libavcodec-dev libswscale-dev
 
 # copy required files/settings from build stage
 # TESSDATA_PREFIX is required for tesseract at runtime
