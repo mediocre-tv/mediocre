@@ -1,0 +1,9 @@
+{
+  "name": "mediocre",
+  "version": "0.0.1",
+  "dependencies": [
+    "grpc",
+    "tesseract",
+    "opencv"
+  ]
+}

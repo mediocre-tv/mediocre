@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="mediocre" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mediocre" TARGET_NAME="mediocre" CONFIG_NAME="Debug-Docker" RUN_TARGET_PROJECT_NAME="mediocre" RUN_TARGET_NAME="mediocre">
+  <configuration default="false" name="mediocre" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="mediocre" TARGET_NAME="mediocre" CONFIG_NAME="Debug-Linux" RUN_TARGET_PROJECT_NAME="mediocre" RUN_TARGET_NAME="mediocre">
     <envs>
       <env name="TESSDATA_PREFIX" value="/local/tesseract/install/share/tessdata/" />
     </envs>
