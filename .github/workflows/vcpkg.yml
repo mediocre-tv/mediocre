@@ -49,4 +49,4 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Run vcpkg
-        run: vcpkg install --debug
+        run: vcpkg install
