@@ -50,3 +50,5 @@ jobs:
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Run vcpkg
         run: vcpkg install
+      - name: Build application
+        run: cmake --preset vcpkg-linux
