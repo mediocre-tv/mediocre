@@ -14,5 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install vcpkg
+        run: |
+          sudo apt install curl zip unzip tar
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Run vcpkg
         run: ${{ github.workspace }}/vcpkg/vcpkg install
