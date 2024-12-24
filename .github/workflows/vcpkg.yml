@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 env:
-  VCPKG_FEATURE_FLAGS: dependencygraph
+  VCPKG_FEATURE_FLAGS: "dependencygraph,binarycaching"
   VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
 
 jobs:
