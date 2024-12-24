@@ -40,7 +40,7 @@ jobs:
           sudo apt install bison # gettext
           sudo apt install libx11-dev libxft-dev libxext-dev xorg openbox # cairo
           sudo apt install libx11-dev libgles2-mesa-dev # libepoxy
-          sudo apt install autoconf automake libtool pkg-config # libxcrypt
+          sudo apt install autoconf automake libtool libltdl-dev pkg-config # libxcrypt
           sudo apt install libxi-dev libxtst-dev # at-spi2-core
           sudo apt install libxrandr-dev # gtk3
       - name: Install package manager
