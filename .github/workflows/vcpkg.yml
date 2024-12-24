@@ -1,0 +1,18 @@
+name: VCPKG
+
+on:
+  push:
+    paths:
+      - .github/workflows/vcpkg.yml
+      - CMakeLists.txt
+      - grpc/**
+      - mediocre/**
+      - scripts/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run vcpkg
+        run: ${{ github.workspace }}/vcpkg/vcpkg install
