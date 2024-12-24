@@ -9,6 +9,12 @@ on:
       - mediocre/**
       - scripts/**
 
+permissions:
+  contents: write
+
+env:
+  VCPKG_FEATURE_FLAGS: dependencygraph
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,4 +26,4 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Run vcpkg
-        run: ${{ github.workspace }}/vcpkg/vcpkg install
+        run: ${{ github.workspace }}/vcpkg/vcpkg install --dry-run
