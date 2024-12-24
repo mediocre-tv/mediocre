@@ -13,6 +13,30 @@ Key libraries used:
 
 ## Install and Run
 
+### Windows/Linux
+
+```shell
+sudo apt update
+
+# install build requirements
+sudo apt install cmake ninja-build # build tools
+sudo apt install build-essential gdb # building for linux
+sudo apt install mingw-w64 # building for windows
+
+# install dependency requirements
+sudo apt install bison # gettext
+sudo apt install libx11-dev libxft-dev libxext-dev xorg openbox # cairo
+sudo apt install libx11-dev libgles2-mesa-dev # libepoxy
+sudo apt install autoconf automake libtool pkg-config # libxcrypt
+sudo apt install libxi-dev libxtst-dev # at-spi2-core
+sudo apt install libxrandr-dev # gtk3
+
+# install package manager
+sudo apt install curl zip unzip tar
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
+```
+
 ### Docker
 
 Currently, the best way to run mediocre is via the pre-built docker images, though there are plans to provide
