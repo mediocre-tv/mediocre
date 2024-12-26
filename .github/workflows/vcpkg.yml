@@ -52,8 +52,8 @@ jobs:
       - name: Configure application
         run: cmake --preset vcpkg-linux
       - name: Build application
-        run: cmake --build build --target mediocre
+        run: cmake --build cmake-linux --target mediocre
       - name: List application
-        run: ls build
+        run: ls cmake-linux
       - name: Run application
-        run: ./build/mediocre
+        run: ./cmake-linux/mediocre
