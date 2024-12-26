@@ -51,5 +51,9 @@ jobs:
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Build application
         run: cmake --preset vcpkg-linux
+      - name: List application
+        run: ls cmake-linux
+      - name: List application 2
+        run: ls ${{ github.workspace }}/cmake-linux/
       - name: Run application
         run: ${{ github.workspace }}/cmake-linux/mediocre
