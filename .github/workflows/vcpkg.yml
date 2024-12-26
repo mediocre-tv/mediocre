@@ -51,3 +51,5 @@ jobs:
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Build application
         run: cmake --preset vcpkg-linux
+      - name: Run application
+        run: ./cmake-linux/mediocre
