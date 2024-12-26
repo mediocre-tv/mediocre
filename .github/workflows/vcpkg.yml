@@ -50,7 +50,7 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Build application
-        run: cmake --preset vcpkg-linux --target mediocre
+        run: cmake --preset vcpkg-linux --build cmake-linux --target mediocre
       - name: List application
         run: ls cmake-linux
       - name: List application 2
