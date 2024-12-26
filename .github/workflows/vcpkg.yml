@@ -50,5 +50,7 @@ jobs:
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
       - name: Run vcpkg
         run: vcpkg install
+      - name: Print variables
+        run: echo $VCPKG_ROOT
       - name: Build application
         run: cmake --preset vcpkg-linux
