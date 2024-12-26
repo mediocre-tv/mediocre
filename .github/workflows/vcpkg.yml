@@ -52,4 +52,4 @@ jobs:
       - name: Build application
         run: cmake --preset vcpkg-linux
       - name: Run application
-        run: ./cmake-linux/mediocre
+        run: ${{ github.workspace }}/cmake-linux/mediocre
