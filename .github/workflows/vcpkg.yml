@@ -15,6 +15,7 @@ permissions:
 env:
   VCPKG_FEATURE_FLAGS: "dependencygraph,binarycaching"
   VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
 jobs:
   build:
@@ -48,14 +49,5 @@ jobs:
           sudo apt install curl zip unzip tar
           git clone https://github.com/microsoft/vcpkg.git
           cd vcpkg && ./bootstrap-vcpkg.sh && cd ..
-      - name: Run vcpkg
-        run: vcpkg install
-      - name: Print variables
-        run: echo $VCPKG_ROOT
-        env:
-          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       - name: Build application
         run: cmake --preset vcpkg-linux
-        env:
-          VCPKG_ROOT: ${{ github.workspace }}/vcpkg
-
