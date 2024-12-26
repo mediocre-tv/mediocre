@@ -6,7 +6,7 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/cmake-linux",
       "cacheVariables": {
-        "CMAKE_TOOLCHAIN_FILE": "/home/oliver/vcpkg/scripts/buildsystems/vcpkg.cmake",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
         "CMAKE_MAKE_PROGRAM": "/usr/bin/ninja",
         "VCPKG_TARGET_TRIPLET": "x64-linux"
       }
